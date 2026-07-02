@@ -1,0 +1,6 @@
+.env
+__pycache__
+node_modules
+.next
+model.joblib
+!backend/ml/artifacts/model.joblib
