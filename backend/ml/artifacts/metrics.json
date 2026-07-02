@@ -1,0 +1,17 @@
+{
+  "algorithm": "LinearRegression",
+  "r2": 0.9961889268675337,
+  "mae": 11808.14555803152,
+  "rmse": 15090.752693973176,
+  "mse": 227730816.87065867,
+  "features": [
+    "square_footage",
+    "bedrooms",
+    "bathrooms",
+    "neighborhood_rating",
+    "school_rating",
+    "property_age",
+    "lot_size"
+  ],
+  "model_version": "1.0.0"
+}
