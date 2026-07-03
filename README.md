@@ -255,8 +255,8 @@ housing.csv → preprocess.py → features.py → train.py → evaluate.py
 ## 📌 Roadmap
 
 - [x] **Phase 1** — Project scaffolding & repository setup
-- [ ] **Phase 2** — ML pipeline (data → trained model)
-- [ ] **Phase 3** — Backend API (FastAPI endpoints)
+- [x] **Phase 2** — ML pipeline (data → trained model)
+- [x] **Phase 3** — Backend API (FastAPI endpoints)
 - [ ] **Phase 4** — Frontend foundation (layout, navigation, hero)
 - [ ] **Phase 5** — Property input form (`/predict` page)
 - [ ] **Phase 6** — Prediction results UI (price card, charts)
