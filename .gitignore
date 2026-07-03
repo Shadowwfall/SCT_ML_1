@@ -4,3 +4,5 @@ node_modules
 .next
 model.joblib
 !backend/ml/artifacts/model.joblib
+.vscode/
+.DS_Store

@@ -1,0 +1,17 @@
+# ── Web Framework ────────────────────────────────
+fastapi              # The API framework — handles routing, request parsing, docs
+uvicorn              # ASGI server — actually runs the FastAPI app
+
+# ── Machine Learning ────────────────────────────
+scikit-learn         # ML library — provides LinearRegression, StandardScaler, etc.
+pandas               # Data manipulation — read CSVs, clean data, feature engineering
+numpy                # Numerical computing — arrays, math operations under the hood
+joblib               # Serialization — save/load trained models and scalers to disk
+
+# ── Validation ──────────────────────────────────
+pydantic             # Data validation — defines request/response schemas with type safety
+                     # (bundled with FastAPI, but listed explicitly for clarity)
+
+# ── Testing ─────────────────────────────────────
+pytest               # Test runner
+httpx                # Async HTTP client — used to test FastAPI endpoints in tests
