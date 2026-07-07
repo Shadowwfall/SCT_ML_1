@@ -55,11 +55,11 @@ async def get_model_info():
         if scaler is not None:
             mean_dict = {
                 feature: float(mean)
-                for feature, mean in zip(features, scaler.mean_)
+                for feature, mean in zip(features, scaler.mean_, strict=True)
             }
             scale_dict = {
                 feature: float(scale)
-                for feature, scale in zip(features, scaler.scale_)
+                for feature, scale in zip(features, scaler.scale_, strict=True)
             }
 
         return ModelInfoResponse(

@@ -2,58 +2,59 @@
 
 import React from "react";
 import { Ruler, Layers, Bed, Bath, History, MapPin, GraduationCap, ClipboardList } from "lucide-react";
+import { formatNumber } from "@/lib/format";
 
 interface FeatureSummaryPanelProps {
   features: Record<string, number>;
 }
 
 export function FeatureSummaryPanel({ features }: FeatureSummaryPanelProps) {
-  const formatNumber = (num: number | undefined) => {
-    if (num === undefined) return "N/A";
-    return new Intl.NumberFormat("en-US").format(num);
+  const formatNumberHelper = (num: number | undefined) => {
+    if (num === undefined || num === null) return "N/A";
+    return formatNumber(num);
   };
 
   const items = [
     {
       label: "Square Footage",
       icon: <Ruler className="h-4.5 w-4.5" />,
-      value: formatNumber(features.square_footage),
+      value: formatNumberHelper(features.square_footage),
       unit: "sq ft",
     },
     {
       label: "Lot Size",
       icon: <Layers className="h-4.5 w-4.5" />,
-      value: formatNumber(features.lot_size),
+      value: formatNumberHelper(features.lot_size),
       unit: "sq ft",
     },
     {
       label: "Bedrooms",
       icon: <Bed className="h-4.5 w-4.5" />,
-      value: features.bedrooms?.toString() ?? "0",
+      value: features.bedrooms !== undefined && features.bedrooms !== null ? features.bedrooms.toString() : "N/A",
       unit: "",
     },
     {
       label: "Bathrooms",
       icon: <Bath className="h-4.5 w-4.5" />,
-      value: features.bathrooms?.toString() ?? "0",
+      value: features.bathrooms !== undefined && features.bathrooms !== null ? features.bathrooms.toString() : "N/A",
       unit: "",
     },
     {
       label: "Property Age",
       icon: <History className="h-4.5 w-4.5" />,
-      value: features.property_age?.toString() ?? "0",
+      value: features.property_age !== undefined && features.property_age !== null ? features.property_age.toString() : "N/A",
       unit: "years",
     },
     {
       label: "Neighborhood Rating",
       icon: <MapPin className="h-4.5 w-4.5" />,
-      value: features.neighborhood_rating?.toFixed(1) ?? "0.0",
+      value: features.neighborhood_rating !== undefined && features.neighborhood_rating !== null ? features.neighborhood_rating.toFixed(1) : "N/A",
       unit: "/ 10",
     },
     {
       label: "School Rating",
       icon: <GraduationCap className="h-4.5 w-4.5" />,
-      value: features.school_rating?.toFixed(1) ?? "0.0",
+      value: features.school_rating !== undefined && features.school_rating !== null ? features.school_rating.toFixed(1) : "N/A",
       unit: "/ 10",
     },
   ];
@@ -85,7 +86,7 @@ export function FeatureSummaryPanel({ features }: FeatureSummaryPanelProps) {
             </div>
             <div className="flex items-baseline font-sans text-[20px] font-semibold text-ink-900 tabular-nums">
               <span>{item.value}</span>
-              {item.unit && (
+              {item.unit && item.value !== "N/A" && (
                 <span className="text-xs font-normal text-ink-600 ml-1 select-none">
                   {item.unit}
                 </span>

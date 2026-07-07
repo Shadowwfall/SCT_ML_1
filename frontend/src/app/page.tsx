@@ -16,7 +16,7 @@ export default function Home() {
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
             {/* Left Content */}
-            <div className="space-y-6 lg:col-span-7 text-center lg:text-left">
+            <div className="relative z-10 space-y-6 lg:col-span-7 text-center lg:text-left">
               <h1 className="font-heading text-4xl font-extrabold tracking-tight text-white sm:text-5xl md:text-6xl leading-[1.1]">
                 Estimate Any Property&apos;s Market Value
               </h1>
@@ -47,7 +47,7 @@ export default function Home() {
             </div>
 
             {/* Right Abstract Visual Decoration */}
-            <div className="lg:col-span-5 flex justify-center">
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-15 sm:opacity-25 lg:relative lg:col-span-5 lg:opacity-100 lg:pointer-events-auto lg:inset-auto z-0">
               <div className="relative w-full max-w-[420px] aspect-square animate-fade-in duration-1000">
                 {/* Glowing backdrop shadow */}
                 <div className="absolute inset-0 bg-primary/20 rounded-full blur-3xl" />

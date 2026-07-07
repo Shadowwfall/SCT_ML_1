@@ -16,18 +16,27 @@ export default function PredictPage() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<PredictionResponse | null>(null);
   const [modelInfo, setModelInfo] = useState<ModelInfoResponse | null>(null);
+  const [modelInfoError, setModelInfoError] = useState<boolean>(false);
+  const [isModelInfoLoading, setIsModelInfoLoading] = useState<boolean>(true);
   const resultsRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLDivElement>(null);
 
   // Fetch model metadata on mount for value driver calculations
+  const fetchModelInfo = async () => {
+    setIsModelInfoLoading(true);
+    setModelInfoError(false);
+    try {
+      const info = await getModelInfo();
+      setModelInfo(info);
+    } catch (err) {
+      console.error("Failed to fetch model info:", err);
+      setModelInfoError(true);
+    } finally {
+      setIsModelInfoLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchModelInfo = async () => {
-      try {
-        const info = await getModelInfo();
-        setModelInfo(info);
-      } catch (err) {
-        console.error("Failed to fetch model info:", err);
-      }
-    };
     fetchModelInfo();
   }, []);
 
@@ -59,6 +68,12 @@ export default function PredictPage() {
   const handleReset = () => {
     setResult(null);
     setError(null);
+    // Wait for the DOM height to update before scrolling to the form
+    setTimeout(() => {
+      if (formRef.current) {
+        formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }, 50);
   };
 
   // Scroll to results section on success
@@ -88,7 +103,7 @@ export default function PredictPage() {
       {/* Main Container */}
       <main className="relative mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 -mt-10 md:-mt-14 z-10 w-full">
         {/* Form Card */}
-        <div className="bg-card border border-border p-6 md:p-10 rounded-2xl shadow-card">
+        <div ref={formRef} className="bg-card border border-border p-6 md:p-10 rounded-2xl shadow-card scroll-mt-20">
           <div className="flex items-center gap-2.5 pb-6 mb-6 border-b border-border">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
               <Landmark className="h-4.5 w-4.5" />
@@ -124,6 +139,28 @@ export default function PredictPage() {
                   scalerScale={modelInfo.scaler_scale}
                   intercept={modelInfo.intercept}
                 />
+              ) : modelInfoError ? (
+                <div className="bg-card border border-destructive/20 p-6 md:p-8 rounded-2xl flex flex-col items-center justify-center text-center text-ink-900 min-h-[300px] shadow-card space-y-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-destructive/10 text-destructive">
+                    <AlertCircle className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-sm font-semibold text-ink-900">Failed to Load Drivers</p>
+                    <p className="text-xs text-ink-600 max-w-[220px] mx-auto">
+                      Could not fetch regression coefficients from the backend.
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={fetchModelInfo}
+                    disabled={isModelInfoLoading}
+                    className="h-8 text-xs font-semibold px-4 flex items-center gap-1.5"
+                  >
+                    <RefreshCw className={`h-3 w-3 ${isModelInfoLoading ? "animate-spin" : ""}`} />
+                    Retry Loading
+                  </Button>
+                </div>
               ) : (
                 <div className="bg-card border border-border p-6 md:p-8 rounded-2xl flex flex-col items-center justify-center text-center text-ink-300 min-h-[300px] shadow-card">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-2" />

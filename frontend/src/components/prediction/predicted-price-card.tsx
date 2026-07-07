@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { TrendingUp, Info } from "lucide-react";
+import { formatCurrency } from "@/lib/format";
 
 interface PredictedPriceCardProps {
   price: number;
@@ -22,6 +23,7 @@ export function PredictedPriceCard({ price, modelVersion }: PredictedPriceCardPr
 
     const duration = 800; // 0.8 seconds for smooth snappy animation
     let startTimestamp: number | null = null;
+    let animationFrameId: number;
 
     const step = (timestamp: number) => {
       if (!startTimestamp) startTimestamp = timestamp;
@@ -33,19 +35,15 @@ export function PredictedPriceCard({ price, modelVersion }: PredictedPriceCardPr
       setDisplayValue(currentValue);
 
       if (progress < 1) {
-        window.requestAnimationFrame(step);
+        animationFrameId = window.requestAnimationFrame(step);
       }
     };
 
-    const animationFrameId = window.requestAnimationFrame(step);
+    animationFrameId = window.requestAnimationFrame(step);
     return () => window.cancelAnimationFrame(animationFrameId);
   }, [price]);
 
-  const formattedPrice = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  }).format(displayValue);
+
 
   return (
     <div className="group bg-card border border-border p-6 md:p-10 rounded-2xl shadow-card hover:translate-y-[-2px] hover:shadow-card-hover transition-all duration-300 relative overflow-hidden">
@@ -68,7 +66,7 @@ export function PredictedPriceCard({ price, modelVersion }: PredictedPriceCardPr
 
         {/* Hero Price Display inside Primary Light Pill Background */}
         <div className="bg-primary-light text-primary px-8 py-4 rounded-2xl md:rounded-full font-bold text-4xl md:text-5xl font-sans tracking-tight tabular-nums shadow-sm border border-primary/10 select-none">
-          {formattedPrice}
+          {formatCurrency(displayValue)}
         </div>
 
         {/* Disclaimer Text */}
