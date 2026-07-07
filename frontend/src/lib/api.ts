@@ -26,7 +26,10 @@ export interface ModelInfoResponse {
   model_version: string;
   coefficients: Record<string, number>;
   intercept: number;
+  scaler_mean: Record<string, number>;
+  scaler_scale: Record<string, number>;
 }
+
 
 /**
  * Submit property features to backend prediction API

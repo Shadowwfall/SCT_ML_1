@@ -48,6 +48,20 @@ async def get_model_info():
         
         intercept = float(model.intercept_)
 
+        # Extract scaler mean and standard deviation
+        from app.services.prediction import scaler
+        mean_dict = {}
+        scale_dict = {}
+        if scaler is not None:
+            mean_dict = {
+                feature: float(mean)
+                for feature, mean in zip(features, scaler.mean_)
+            }
+            scale_dict = {
+                feature: float(scale)
+                for feature, scale in zip(features, scaler.scale_)
+            }
+
         return ModelInfoResponse(
             algorithm=metrics.get("algorithm", "LinearRegression"),
             r2=metrics.get("r2", 0.0),
@@ -57,8 +71,11 @@ async def get_model_info():
             features=features,
             model_version=metrics.get("model_version", "1.0.0"),
             coefficients=coef_dict,
-            intercept=intercept
+            intercept=intercept,
+            scaler_mean=mean_dict,
+            scaler_scale=scale_dict
         )
+
         
     except Exception as e:
         raise HTTPException(
