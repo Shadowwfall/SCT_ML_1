@@ -3,7 +3,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { PropertyInputForm } from "@/components/prediction/property-input-form";
-import { postPrediction, type PredictionResponse } from "@/lib/api";
+import { PredictedPriceCard } from "@/components/prediction/predicted-price-card";
+import { FeatureSummaryPanel } from "@/components/prediction/feature-summary-panel";
+import { RegressionChart } from "@/components/prediction/regression-chart";
+import { postPrediction, getModelInfo, type PredictionResponse, type ModelInfoResponse } from "@/lib/api";
 import { type PredictionFormData } from "@/lib/schemas/prediction";
 import { Brain, Landmark, AlertCircle, RefreshCw, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,7 +15,21 @@ export default function PredictPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<PredictionResponse | null>(null);
+  const [modelInfo, setModelInfo] = useState<ModelInfoResponse | null>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  // Fetch model metadata on mount for value driver calculations
+  useEffect(() => {
+    const fetchModelInfo = async () => {
+      try {
+        const info = await getModelInfo();
+        setModelInfo(info);
+      } catch (err) {
+        console.error("Failed to fetch model info:", err);
+      }
+    };
+    fetchModelInfo();
+  }, []);
 
   const handleFormSubmit = async (data: PredictionFormData) => {
     setIsLoading(true);
@@ -92,42 +109,34 @@ export default function PredictPage() {
           <PropertyInputForm onSubmit={handleFormSubmit} isLoading={isLoading} />
         </div>
 
-        {/* Temporary success section (will be replaced by full Results UI in Phase 6) */}
+        {/* Prediction Results UI */}
         {result && (
-          <div
-            ref={resultsRef}
-            className="mt-8 bg-card border border-border rounded-2xl p-6 md:p-8 shadow-card text-center space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-500"
-          >
-            <div className="flex flex-col items-center space-y-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success/10 text-success">
-                <CheckCircle2 className="h-6 w-6" />
-              </div>
-              <h3 className="font-heading text-lg font-bold text-ink-900">
-                Prediction Completed
-              </h3>
-              <p className="text-sm text-ink-600">
-                Model estimate computed in under 0.1 seconds using {result.model_version}.
-              </p>
-            </div>
+          <div ref={resultsRef} className="mt-8 space-y-6 animate-in fade-in slide-in-from-bottom-6 duration-500">
+            <PredictedPriceCard price={result.estimated_price} modelVersion={result.model_version} />
 
-            <div className="py-6 border-y border-border">
-              <span className="text-xs uppercase font-semibold text-ink-600 tracking-wider block mb-1">
-                Estimated Market Value
-              </span>
-              <span className="font-sans text-4xl md:text-5xl font-bold text-primary tracking-tight tabular-nums block">
-                {new Intl.NumberFormat("en-US", {
-                  style: "currency",
-                  currency: "USD",
-                  maximumFractionDigits: 0,
-                }).format(result.estimated_price)}
-              </span>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <FeatureSummaryPanel features={result.input_summary} />
+              {modelInfo ? (
+                <RegressionChart
+                  features={result.input_summary}
+                  coefficients={modelInfo.coefficients}
+                  scalerMean={modelInfo.scaler_mean}
+                  scalerScale={modelInfo.scaler_scale}
+                  intercept={modelInfo.intercept}
+                />
+              ) : (
+                <div className="bg-card border border-border p-6 md:p-8 rounded-2xl flex flex-col items-center justify-center text-center text-ink-300 min-h-[300px] shadow-card">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mb-2" />
+                  <p className="text-xs text-ink-600">Loading regression drivers...</p>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 variant="outline"
                 onClick={handleReset}
-                className="w-full sm:w-auto h-10 px-6 flex items-center justify-center gap-2"
+                className="w-full sm:w-auto h-10 px-6 flex items-center justify-center gap-2 shadow-sm border-border hover:bg-muted text-ink-900 font-semibold"
               >
                 <RefreshCw className="h-4 w-4" />
                 Clear and Recalculate

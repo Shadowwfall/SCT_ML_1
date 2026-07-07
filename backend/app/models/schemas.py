@@ -28,4 +28,7 @@ class ModelInfoResponse(BaseModel):
     model_version: str = Field(..., description="Model version")
     coefficients: Dict[str, float] = Field(..., description="Feature regression coefficients")
     intercept: float = Field(..., description="Regression model intercept")
+    scaler_mean: Dict[str, float] = Field(default={}, description="Scaler mean values for features")
+    scaler_scale: Dict[str, float] = Field(default={}, description="Scaler scale (std dev) values for features")
+
 
