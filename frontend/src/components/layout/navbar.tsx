@@ -54,7 +54,7 @@ export function Navbar() {
                 "relative flex h-full items-center text-sm font-medium transition-colors duration-200 py-1",
                 isActive(link.href)
                   ? "text-primary font-semibold"
-                  : "text-ink-600 hover:text-ink-900"
+                  : "text-ink-600 hover:text-primary"
               )}
             >
               {link.label}

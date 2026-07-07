@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell } from "recharts";
+import { formatCurrency, formatPriceImpact, formatFeatureValue } from "@/lib/format";
 import { BarChart3, Info } from "lucide-react";
 
 interface RegressionChartProps {
@@ -35,27 +36,6 @@ export function RegressionChart({
     setIsMounted(true);
   }, []);
 
-  const formatPrice = (value: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    }).format(value);
-  };
-
-  const formatRawValue = (key: string, val: number) => {
-    if (key === "square_footage" || key === "lot_size") {
-      return `${new Intl.NumberFormat("en-US").format(val)} sq ft`;
-    }
-    if (key === "property_age") {
-      return `${val} years old`;
-    }
-    if (key === "neighborhood_rating" || key === "school_rating") {
-      return `${val.toFixed(1)}/10`;
-    }
-    return val.toString();
-  };
-
   // Compile contributions: coef_i * ((raw_x_i - mean_i) / std_i)
   const chartData = Object.keys(features)
     .map((key) => {
@@ -71,7 +51,7 @@ export function RegressionChart({
         key,
         name: labelMap[key] || key,
         contribution: Math.round(contribution),
-        formattedRawValue: formatRawValue(key, rawVal),
+        formattedRawValue: formatFeatureValue(key, rawVal),
       };
     })
     // Sort contributions by absolute impact (highest impact first)
@@ -90,7 +70,7 @@ export function RegressionChart({
             Selected: <span className="font-semibold text-ink-900">{data.formattedRawValue}</span>
           </p>
           <p className={`${isPositive ? "text-success" : "text-destructive"} font-bold`}>
-            Price Driver: {isPositive ? "+" : ""}{formatPrice(value)}
+            Price Driver: {formatPriceImpact(value)}
           </p>
         </div>
       );
@@ -120,7 +100,7 @@ export function RegressionChart({
             Value Drivers
           </h3>
           <p className="text-xs text-ink-600">
-            Impact relative to average baseline of <span className="font-semibold text-primary">{formatPrice(intercept)}</span>
+            Impact relative to average baseline of <span className="font-semibold text-primary">{formatCurrency(intercept)}</span>
           </p>
         </div>
       </div>

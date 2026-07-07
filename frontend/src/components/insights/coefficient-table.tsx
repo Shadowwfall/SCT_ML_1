@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Scale, Info } from "lucide-react";
+import { formatPriceImpact, formatImpactPerUnit } from "@/lib/format";
 
 interface CoefficientTableProps {
   coefficients: Record<string, number>;
@@ -47,28 +48,6 @@ const featureMetaMap: Record<string, { label: string; unit: string; description:
 };
 
 export function CoefficientTable({ coefficients, scalerScale }: CoefficientTableProps) {
-  const formatPrice = (val: number) => {
-    const prefix = val >= 0 ? "+" : "";
-    const formatted = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    }).format(val);
-    return `${prefix}${formatted}`;
-  };
-
-  const formatImpactPerUnit = (val: number, unit: string) => {
-    const prefix = val >= 0 ? "+" : "";
-    // If unit impact is very large (e.g. bed/bath), round to 0 decimal places. If it is small (e.g. sq ft/lot size), round to 2 decimals.
-    const isLarge = Math.abs(val) >= 1000;
-    const formatted = new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: isLarge ? 0 : 2,
-    }).format(val);
-    return `${prefix}${formatted} / ${unit}`;
-  };
-
   const rows = Object.keys(coefficients)
     .map((key) => {
       const coef = coefficients[key];
@@ -150,7 +129,7 @@ export function CoefficientTable({ coefficients, scalerScale }: CoefficientTable
                         isPositive ? "text-primary" : "text-destructive"
                       }`}
                     >
-                      {formatPrice(row.standardized)}
+                      {formatPriceImpact(row.standardized)}
                     </td>
                     <td
                       className={`py-4 pr-6 md:pr-4 text-right text-sm font-semibold tabular-nums align-middle ${

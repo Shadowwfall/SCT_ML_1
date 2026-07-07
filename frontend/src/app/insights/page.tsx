@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { getModelInfo, type ModelInfoResponse } from "@/lib/api";
 import { MetricTile } from "@/components/insights/metric-tile";
+import { formatCurrency, formatPercentage, formatNumber } from "@/lib/format";
 import { CoefficientTable } from "@/components/insights/coefficient-table";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Target, Activity, TrendingDown, Hash, Brain } from "lucide-react";
@@ -19,10 +20,10 @@ export default function InsightsPage() {
       try {
         const info = await getModelInfo();
         setModelInfo(info);
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error("Error fetching model info:", err);
         let errorMessage = "Could not load machine learning model insights.";
-        if (err.message) {
+        if (err instanceof Error) {
           errorMessage = `${err.message}. Please check if the backend FastAPI server is running on http://localhost:8000.`;
         }
         setError(errorMessage);
@@ -33,24 +34,6 @@ export default function InsightsPage() {
     
     fetchModelInfo();
   }, []);
-
-  const formatPercentage = (val: number) => {
-    return `${(val * 100).toFixed(2)}%`;
-  };
-
-  const formatPrice = (val: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    }).format(val);
-  };
-
-  const formatNumber = (val: number) => {
-    return new Intl.NumberFormat("en-US", {
-      maximumFractionDigits: 0,
-    }).format(val);
-  };
 
   return (
     <div className="flex flex-col w-full bg-background min-h-full pb-20">
@@ -114,13 +97,13 @@ export default function InsightsPage() {
                 />
                 <MetricTile
                   label="RMSE (Std Dev of Errors)"
-                  value={formatPrice(modelInfo.rmse)}
+                  value={formatCurrency(modelInfo.rmse)}
                   description="Root Mean Squared Error. Standard deviation of estimation variance; penalizes larger forecasting errors more heavily."
                   icon={<Activity className="h-5 w-5" />}
                 />
                 <MetricTile
                   label="MAE (Avg Absolute Error)"
-                  value={formatPrice(modelInfo.mae)}
+                  value={formatCurrency(modelInfo.mae)}
                   description="Mean Absolute Error. The average size of estimation errors in raw dollars, representing the expected value deviation."
                   icon={<TrendingDown className="h-5 w-5" />}
                 />
