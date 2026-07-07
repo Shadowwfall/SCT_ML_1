@@ -10,8 +10,18 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "PropValuate — House Price Prediction Platform",
-  description: "Estimate any property's market value in under 2 seconds using a trained machine learning model.",
+  title: {
+    default: "PropValuate — Real Estate Valuation & Predictive Pricing",
+    template: "%s | PropValuate",
+  },
+  description: "Estimate any residential property's market value in seconds using a trained linear regression machine learning model.",
+  keywords: ["real estate valuation", "house price prediction", "machine learning price estimate", "linear regression real estate", "property price calculator"],
+  authors: [{ name: "PropValuate Team" }],
+  openGraph: {
+    title: "PropValuate — Real Estate Valuation & Predictive Pricing",
+    description: "Estimate any residential property's market value in seconds using a trained machine learning model.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

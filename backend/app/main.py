@@ -112,11 +112,15 @@ app = FastAPI(
 # allow_headers   → which headers the frontend can send
 # allow_credentials → whether cookies/auth headers are allowed
 
+import os
+
+# Load allowed origins from environment variable, falling back to local dev server
+origins_str = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000")
+allowed_origins = [origin.strip() for origin in origins_str.split(",") if origin.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",   # Next.js dev server
-    ],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],           # Allow all HTTP methods
     allow_headers=["*"],           # Allow all headers

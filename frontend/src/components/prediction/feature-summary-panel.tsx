@@ -74,10 +74,10 @@ export function FeatureSummaryPanel({ features }: FeatureSummaryPanelProps) {
         {items.map((item, index) => (
           <div
             key={index}
-            className="flex items-center justify-between py-3.5 first:pt-0 last:pb-0"
+            className="group/item flex items-center justify-between py-3.5 px-3 -mx-3 first:mt-[-4px] last:mb-[-4px] rounded-xl hover:bg-secondary/40 transition-colors duration-200"
           >
             <div className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/5 text-primary shrink-0">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/5 text-primary shrink-0 transition-transform duration-300 group-hover/item:scale-110">
                 {item.icon}
               </div>
               <span className="text-xs uppercase font-bold text-ink-600 tracking-wider">

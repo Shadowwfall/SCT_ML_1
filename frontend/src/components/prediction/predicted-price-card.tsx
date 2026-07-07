@@ -51,7 +51,7 @@ export function PredictedPriceCard({ price, modelVersion }: PredictedPriceCardPr
       <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-primary/8 transition-colors duration-300" />
       
       <div className="relative flex flex-col items-center text-center space-y-6">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success/10 text-success">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success/10 text-success transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-12">
           <TrendingUp className="h-6 w-6" />
         </div>
         

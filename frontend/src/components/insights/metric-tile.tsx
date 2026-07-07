@@ -20,26 +20,17 @@ export function MetricTile({ label, value, description, isPrimary = false, icon 
       }`}
     >
       <div className="flex justify-between items-start gap-4">
-        <div className="space-y-1">
-          <span
-            className={`text-[10px] md:text-xs font-bold uppercase tracking-widest font-heading block ${
-              isPrimary ? "text-primary/90 dark:text-ink-600" : "text-ink-600"
-            }`}
-          >
-            {label}
-          </span>
-          <div
-            className={`text-2xl md:text-3xl font-extrabold font-sans tracking-tight tabular-nums leading-none ${
-              isPrimary ? "text-primary font-black" : "text-ink-900"
-            }`}
-          >
-            {value}
-          </div>
-        </div>
+        <span
+          className={`text-[10px] md:text-xs font-bold uppercase tracking-widest font-heading block ${
+            isPrimary ? "text-primary/90 dark:text-ink-600" : "text-ink-600"
+          }`}
+        >
+          {label}
+        </span>
 
         {icon && (
           <div
-            className={`p-2.5 rounded-lg shrink-0 transition-transform group-hover:scale-105 duration-300 ${
+            className={`p-2.5 rounded-lg shrink-0 transition-transform group-hover:scale-110 group-hover:rotate-3 duration-300 ${
               isPrimary
                 ? "bg-primary/10 text-primary dark:bg-primary/20"
                 : "bg-primary/5 text-primary"
@@ -48,6 +39,14 @@ export function MetricTile({ label, value, description, isPrimary = false, icon 
             {icon}
           </div>
         )}
+      </div>
+
+      <div
+        className={`text-2xl md:text-3xl font-extrabold font-sans tracking-tight tabular-nums leading-none mt-3.5 ${
+          isPrimary ? "text-primary font-black" : "text-ink-900"
+        }`}
+      >
+        {value}
       </div>
 
       <p
