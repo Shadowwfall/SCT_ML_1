@@ -14,6 +14,7 @@ _current_dir = os.path.dirname(os.path.abspath(__file__))
 _metrics_path = os.path.join(_current_dir, "..", "..", "ml", "artifacts", "metrics.json")
 
 @router.get("", response_model=ModelInfoResponse)
+@router.get("/", response_model=ModelInfoResponse)
 async def get_model_info():
     """
     Retrieve model metrics and feature coefficients.

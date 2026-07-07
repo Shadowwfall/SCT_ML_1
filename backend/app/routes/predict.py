@@ -23,6 +23,7 @@ if os.path.exists(_metrics_path):
         print(f"⚠️ Failed to read model version from metrics.json: {e}")
 
 @router.post("", response_model=PredictionResponse)
+@router.post("/", response_model=PredictionResponse)
 async def predict_price(request: PredictionRequest):
     """
     Predict property price based on 7 input features.
