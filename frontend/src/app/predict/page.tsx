@@ -56,7 +56,7 @@ export default function PredictPage() {
       } else if (Array.isArray(detail)) {
         errorMessage = detail.map((d: any) => `${d.loc.join(".")}: ${d.msg}`).join(", ");
       } else if (err.message) {
-        errorMessage = `${err.message}. Please check if the backend server is running on http://localhost:8000.`;
+        errorMessage = `${err.message}. Please check if the backend server is running and accessible.`;
       }
       setError(errorMessage);
       setResult(null);

@@ -24,7 +24,7 @@ export default function InsightsPage() {
         console.error("Error fetching model info:", err);
         let errorMessage = "Could not load machine learning model insights.";
         if (err instanceof Error) {
-          errorMessage = `${err.message}. Please check if the backend FastAPI server is running on http://localhost:8000.`;
+          errorMessage = `${err.message}. Please check if the backend server is running and accessible.`;
         }
         setError(errorMessage);
       } finally {
