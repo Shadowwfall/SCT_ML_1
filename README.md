@@ -252,17 +252,6 @@ housing.csv → preprocess.py → features.py → train.py → evaluate.py
 
 ---
 
-## 📌 Roadmap
-
-- [x] **Phase 1** — Project scaffolding & repository setup
-- [x] **Phase 2** — ML pipeline (data → trained model)
-- [x] **Phase 3** — Backend API (FastAPI endpoints)
-- [ ] **Phase 4** — Frontend foundation (layout, navigation, hero)
-- [ ] **Phase 5** — Property input form (`/predict` page)
-- [ ] **Phase 6** — Prediction results UI (price card, charts)
-- [ ] **Phase 7** — Model insights dashboard (`/insights` page)
-- [ ] **Phase 8** — Polish, testing & deployment
-
 ### Future Enhancements
 
 - Price confidence intervals
@@ -282,12 +271,6 @@ housing.csv → preprocess.py → features.py → train.py → evaluate.py
 3. Commit your changes (`git commit -m 'Add your feature'`)
 4. Push to the branch (`git push origin feature/your-feature`)
 5. Open a Pull Request
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ---
 
