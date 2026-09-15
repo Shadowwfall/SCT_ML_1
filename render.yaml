@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: propvaluate-api
+    runtime: docker
+    # Render will build from the Dockerfile in the backend/ directory
+    dockerContext: backend
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    envVars:
+      - key: PORT
+        value: "8000"
+      - key: ALLOWED_ORIGINS
+        # Replace with your actual frontend URL after deploying the frontend
+        value: "http://localhost:3000"
